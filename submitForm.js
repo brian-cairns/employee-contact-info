@@ -67,40 +67,179 @@ class Workday {
     }
 }
 
-async function getAvailability() {
-    let availability = []
-    let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    for (let i = 0; i < 6; i++) {
-        let day = new Workday
-        day.day = days[i];
-        let start = document.getElementById(`start${i}`);
-        let startAm = document.getElementById(`am${i}`);
-        let stop = document.getElementById(`stop${i}`);
-        let stopPm = document.getElementById(`pm${i}`);
-        day.start = [start, startAm]
-        day.stop = [stop, stopPm]
-        availability.push(day)
-    }
-    return availability
+let availability = {
+  'Mon': [],
+  'Tue': [],
+  'Wed': [],
+  'Thu': [],
+  'Fri': [],
+  'Sat': []
 }
 
-function getTraining() {
-    var training
-    if (document.getElementById('Tue')) { training = 'Tuesday' }
-    if (document.getElementById('Sat')) { training = 'Saturday' }
-    else {training = document.getElementById('other-training')}
+let start1 = document.getElementById('start1')
+start1.addEventListener('change', (e) => {
+  availability.Mon.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let am1 = document.getElementById('am1')
+am1.addEventListener('change', (e) => {
+  availability.Mon.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let stop1 = document.getElementById('stop1')
+stop1.addEventListener('change', (e) => {
+  availability.Mon.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let pm1 = document.getElementById('pm1')
+pm1.addEventListener('change', (e) => {
+  availability.Mon.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let start2 = document.getElementById('start2')
+start2.addEventListener('change', (e) => {
+  availability.Tue.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let am2 = document.getElementById('am2')
+am2.addEventListener('change', (e) => {
+  availability.Tue.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let stop2 = document.getElementById('stop2')
+stop2.addEventListener('change', (e) => {
+  availability.Tue.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let pm2 = document.getElementById('pm2')
+pm2.addEventListener('change', (e) => {
+  availability.Tue.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let start3 = document.getElementById('start3')
+start3.addEventListener('change', (e) => {
+  availability.Wed.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let am3 = document.getElementById('am3')
+am3.addEventListener('change', (e) => {
+  availability.Wed.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let stop3 = document.getElementById('stop3')
+stop3.addEventListener('change', (e) => {
+  availability.Wed.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let pm3 = document.getElementById('pm3')
+pm3.addEventListener('change', (e) => {
+  availability.Wed.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let start4 = document.getElementById('start4')
+start4.addEventListener('change', (e) => {
+  availability.Wed.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let am4 = document.getElementById('am4')
+am4.addEventListener('change', (e) => {
+  availability.Thu.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let stop4 = document.getElementById('stop4')
+stop4.addEventListener('change', (e) => {
+  availability.Thu.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let pm4 = document.getElementById('pm4')
+pm4.addEventListener('change', (e) => {
+  availability.Thu.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let start5 = document.getElementById('start5')
+start5.addEventListener('change', (e) => {
+  availability.Thu.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let am5 = document.getElementById('am5')
+am5.addEventListener('change', (e) => {
+  availability.Fri.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let stop5 = document.getElementById('stop5')
+stop5.addEventListener('change', (e) => {
+  availability.Fri.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let pm5 = document.getElementById('pm5')
+pm5.addEventListener('change', (e) => {
+  availability.Fri.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let start6 = document.getElementById('start6')
+start6.addEventListener('change', (e) => {
+  availability.Sat.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let am6 = document.getElementById('am6')
+am6.addEventListener('change', (e) => {
+  availability.Sat.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let stop6 = document.getElementById('stop6')
+stop6.addEventListener('change', (e) => {
+  availability.Sat.push(e.target.value);
+  console.log(e.target.value)
+})
+
+let pm6 = document.getElementById('pm6')
+pm6.addEventListener('change', (e) => {
+  availability.Sat.push(e.target.value);
+  console.log(e.target.value)
+})
+
+async function getTraining() {
+    let training = new Promise((res) => {
+    if (document.getElementById('Tue').checked) { res('Tuesday') }
+    if (document.getElementById('Sat').checked) { res('Saturday') }
+    if (document.getElementById('other')) { res(document.getElementById('other-training')) }
+    })
+  return training
 }
     
-let comments = document.querySelector('input#comments')
+let comments = document.getElementById('comments')
 comments.addEventListener('change', (e) => {
     newForm.comments = e.target.value;
     console.log(newForm.comments)
 })
     
 document.getElementById('submit').addEventListener("click", async (event) => {
-    const availability = await getAvailability()
     newForm.availability = availability
     const training = await getTraining()
+    newForm.training = training
+    console.log(newForm)
     submitForm(newForm, formName)
 })
 
