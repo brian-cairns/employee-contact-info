@@ -261,6 +261,8 @@ document.getElementById('submit').addEventListener("click", async (event) => {
     const training = await getTraining()
     newForm.training = training
     newEmployee.training = 'incomplete'
+    newEmployee.clients = [];
+    newEmployee.supervisior = 'unassigned'
     console.log(newForm)
     submitForm(newForm, formName)
     createNewEmployee(newEmployee)
