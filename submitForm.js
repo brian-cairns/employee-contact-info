@@ -3,59 +3,80 @@ console.log(submit)
 const formName = 'employeeContactInfo'
 console.log('form: ' + formName)
 let newForm = {}
+let newEmployee = {}
+
+class Address {
+  constructor (street, city, state, zip) {
+    this.street = street;
+    this.city = city;
+    this.state = state;
+    this.zip = zip
+  }
+}
+
+newEmployee.address = new Address ();
 
 let name = document.querySelector('input#name')
 name.addEventListener('change', (e) => {
 	console.log('changed')
 	newForm.name = e.target.value;
+  newEmployee.name = e.target.value;
   console.log(newForm.name);
   })
   
 let email = document.querySelector('input#email')
 email.addEventListener('change', (e) => {
 	newForm.email = e.target.value;
+  newEmployee.email = e.target.value;
   console.log(newForm.email);
 })
 
 let address = document.querySelector('input#address')
 address.addEventListener('change', (e) => {
 	newForm.address = e.target.value;
+  newEmployee.address.street = e.target.value;
   console.log(newForm.address);
 })
 
 let city = document.querySelector('input#city')
 city.addEventListener('change', (e) => {
-	newForm.city = e.target.value;
+	newEmployee.address.city = e.target.value;
+  newForm.city = e.target.value;
   console.log(newForm.city);
 })
 
 let state = document.querySelector('input#state')
 state.addEventListener('change', (e) => {
 	newForm.state = e.target.value;
+  newEmployee.address.state = e.target.value;
   console.log(newForm.state);
 })
 
 let zip = document.querySelector('input#zip')
 zip.addEventListener('change', (e) => {
 	newForm.zip = e.target.value;
+  newEmployee.address.zip = e.target.value;
   console.log(newForm.zip);
 })
 
 let phone = document.querySelector('input#phone')
 phone.addEventListener('change', (e) => {
 	newForm.phone = e.target.value;
+  newEmployee.phone = e.target.value;
   console.log(newForm.phone);
 })
 
 let emergencyContactName = document.querySelector('input#emergencyContactName')
 emergencyContactName.addEventListener('change', (e) => {
-	newForm.emergencyContactName = e.target.value;
+	newEmployee.emergencyContact = e.target.value;
+  newForm.emergencyContactName = e.target.value;
   console.log(newForm.emergencyContactName);
 })
 
 let emergencyContactPhone = document.querySelector('input#emergencyContactPhone')
 emergencyContactPhone.addEventListener('change', (e) => {
 	newForm.emergencyContactPhone = e.target.value;
+  newEmployee.emergencyPhone = e.target.value;
   console.log(newForm.emergencyContactPhone);
 })
 
@@ -239,8 +260,10 @@ document.getElementById('submit').addEventListener("click", async (event) => {
     newForm.availability = availability
     const training = await getTraining()
     newForm.training = training
+    newEmployee.training = 'incomplete'
     console.log(newForm)
     submitForm(newForm, formName)
+    createNewEmployee(newEmployee)
 })
 
 async function submitForm(data, form) {
@@ -267,6 +290,28 @@ async function submitForm(data, form) {
     .catch((err) => showError(err))
 }
 
+async function createNewEmployee(data) {
+  const document = {
+    'data': data
+  }
+  console.log(document)
+  fetch('https://pffm.azurewebsites.net/Employees/newEmployee', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin" : "*"
+    },
+    body: JSON.stringify(document)
+  })
+    .then((response) => {
+      if (response.status == 200) {
+      showSuccess()
+      } else {
+        showError(response.body)
+      }
+    })
+    .catch((err) => showError(err))
+}
 
 function showSuccess() {
     document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
