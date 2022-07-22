@@ -263,6 +263,7 @@ document.getElementById('submit').addEventListener("click", async (event) => {
     newEmployee.training = 'incomplete'
     newEmployee.clients = [];
     newEmployee.supervisior = 'unassigned'
+    newEmployee.hrsWorked = 0;
     console.log(newForm)
     submitForm(newForm, formName)
     createNewEmployee(newEmployee)
