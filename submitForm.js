@@ -283,44 +283,40 @@ async function submitForm(data, form) {
     },
     body: JSON.stringify(document)
   })
-    .then((response) => {
-      if (response.status == 200) {
-      showSuccess()
-      } else {
-        showError(response.body)
-      }
-    })
+    .then(response => response.json())
+    .then(data => respond(data)) 
     .catch((err) => showError(err))
 }
 
-async function createNewEmployee(data) {
-  const document = {
-    'data': data
+function respond(data) {
+  let id = data.key
+  if (id) {
+    showSuccess(id) 
+  } else {
+    showError(data.error)
   }
-  console.log(document)
-  fetch('https://pffm.azurewebsites.net/Employees/newEmployee', {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin" : "*"
-    },
-    body: JSON.stringify(document)
-  })
-    .then((response) => {
-      if (response.status == 200) {
-      showSuccess()
-      } else {
-        showError(response.body)
-      }
-    })
-    .catch((err) => showError(err))
 }
 
-function showSuccess() {
-    document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
+function showSuccess(id) {
+  document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
 }
 
 function showError(err) {
     console.error
     document.getElementById('returnMessage').innerHTML = `An error occurred when submitting this form, which was ${err}. Please contact the administrator for help.`
+}
+
+async function createNewEmployee(record) {
+  fetch('https://pffm.azurewebsites.net/employee/employeeContactInfo', {
+    method: "POST",
+    headers: header,
+    body: JSON.stringify(record)
+  })
+    .then((result) => result.json())
+    .then((data) => handleResponse(data))
+    .catch(console.error)
+}
+
+function handleError(data) {
+  if(data.error) {console.log(data.error)} else {console.log(data.response)}
 }
